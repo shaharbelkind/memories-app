@@ -1,0 +1,11 @@
+{
+  "name": "mobile",
+  "private": true,
+  "main": "index.js",
+  "scripts": { "dev": "expo start" },
+  "dependencies": {
+    "expo": "~51.0.14",
+    "react": "18.3.1",
+    "react-native": "0.74.2"
+  }
+}

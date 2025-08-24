@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  children  Child[]
+}
+
+model Child {
+  id        String   @id @default(uuid())
+  name      String
+  dob       DateTime?
+  userId    String?
+  user      User? @relation(fields: [userId], references: [id])
+  memories  Memory[]
+  arObjects ARObject[]
+  milestones Milestone[]
+  quests Quest[]
+  consents Consent[]
+}
+
+model Memory {
+  id        String  @id @default(uuid())
+  child     Child   @relation(fields: [childId], references: [id])
+  childId   String
+  kind      String
+  url       String
+  s3RawKey  String?
+  s3ProcKey String?
+  takenAt   DateTime?
+  transcript String?
+  embedding  Bytes?
+  createdAt DateTime @default(now())
+  tags      MemoryTag[]
+  arLinks ARLink[]
+  questPicks QuestPick[]
+}
+
+model Tag {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  memories  MemoryTag[]
+}
+
+model MemoryTag {
+  memoryId String
+  tagId    String
+  memory   Memory @relation(fields:[memoryId], references:[id])
+  tag      Tag    @relation(fields:[tagId], references:[id])
+  @@id([memoryId, tagId])
+}
+
+model ARObject {
+  id        String   @id @default(uuid())
+  child     Child    @relation(fields: [childId], references: [id])
+  childId   String
+  label     String
+  meshKey   String?   // s3 key for glTF/USdz (future)
+  previewKey String?  // s3 key for preview image
+  createdAt DateTime @default(now())
+  links     ARLink[]
+}
+
+model ARLink {
+  objectId String
+  memoryId String
+  createdAt DateTime @default(now())
+  object   ARObject @relation(fields: [objectId], references: [id])
+  memory   Memory   @relation(fields: [memoryId], references: [id])
+  @@id([objectId, memoryId])
+}
+
+model Milestone {
+  id        String   @id @default(uuid())
+  child     Child    @relation(fields: [childId], references: [id])
+  childId   String
+  title     String
+  date      DateTime?
+  confidence Int     @default(100)
+  // JSON: { required:["voice","art","clip"], present:["photo"], score:75 }
+  completeness Json   @default("{}")
+  createdAt  DateTime @default(now())
+  @@unique([childId, title])
+}
+
+model Quest {
+  id        String   @id @default(uuid())
+  child     Child    @relation(fields: [childId], references: [id])
+  childId   String
+  month     Int
+  year      Int
+  target    Int      @default(5)
+  status    String   @default("OPEN") // OPEN|DONE
+  picks     QuestPick[]
+  createdAt DateTime @default(now())
+  @@unique([childId, month, year])
+}
+
+model QuestPick {
+  id        String  @id @default(uuid())
+  quest     Quest   @relation(fields:[questId], references:[id])
+  questId   String
+  memory    Memory  @relation(fields:[memoryId], references:[id])
+  memoryId  String
+  createdAt DateTime @default(now())
+}
+
+model Consent {
+  id        String   @id @default(uuid())
+  child     Child    @relation(fields: [childId], references: [id])
+  childId   String
+  shareLink ShareLink? @relation(fields:[shareId], references:[id])
+  shareId   String? @unique
+  status    String   @default("PENDING") // PENDING|APPROVED|REJECTED
+  createdAt DateTime @default(now())
+  @@index([childId, shareId])
+}
+model ShareLink {
+  id        String   @id @default(uuid())
+  memoryId  String
+  expiresAt DateTime
+  passHash  String?
+  consent   Consent?
+  createdAt DateTime @default(now())
+}

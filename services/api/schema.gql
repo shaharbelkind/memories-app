@@ -1,0 +1,86 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type ARObjectGQL {
+  id: ID!
+  label: String!
+  meshUrl: String
+  previewUrl: String
+}
+
+type Child {
+  dob: String
+  id: ID!
+  name: String!
+}
+
+input ChildInput {
+  dob: String
+  name: String!
+}
+
+type ConsentOut {
+  id: ID!
+  status: String!
+}
+
+type Memory {
+  id: ID!
+  kind: String!
+  takenAt: String
+  url: String!
+}
+
+type MilestoneGQL {
+  date: String
+  id: ID!
+  missing: [String!]!
+  score: Float!
+  title: String!
+}
+
+type Mutation {
+  attachUploadedFile(memoryId: String!, publicUrl: String!): Memory!
+  createARObject(childId: String!, label: String!): ARObjectGQL!
+  createChild(input: ChildInput!): Child!
+  createUploadUrl(childId: String!, contentType: String!, filename: String!, kind: String!): Presigned!
+  createYearbook(childId: String!): YearbookJob!
+  ensureMonthlyQuest(childId: String!, month: Float!, target: Float! = 5, year: Float!): QuestGQL!
+  linkMemoryToObject(memoryId: String!, objectId: String!): Boolean!
+  markArtifactPresent(kind: String!, milestoneId: String!): Boolean!
+  pickFavorite(memoryId: String!, questId: String!): Boolean!
+  requestConsent(childId: String!, shareId: String!): ConsentOut!
+  respondConsent(approve: Boolean!, consentId: String!): ConsentOut!
+  upsertMilestone(childId: String!, date: String, title: String!): MilestoneGQL!
+}
+
+type Presigned {
+  key: String!
+  url: String!
+}
+
+type Query {
+  arObjects(childId: String!): [ARObjectGQL!]!
+  child(id: String!): Child
+  children: [Child!]!
+  getYearbook(jobId: String!): YearbookOut!
+  memories(childId: String!): [Memory!]!
+  milestones(childId: String!): [MilestoneGQL!]!
+}
+
+type QuestGQL {
+  id: ID!
+  month: Float!
+  status: String!
+  target: Float!
+  year: Float!
+}
+
+type YearbookJob {
+  id: ID!
+}
+
+type YearbookOut {
+  url: String!
+}

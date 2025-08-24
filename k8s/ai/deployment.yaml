@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: PLACEHOLDER
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: PLACEHOLDER
+  template:
+    metadata:
+      labels:
+        app: PLACEHOLDER
+    spec:
+      containers:
+        - name: PLACEHOLDER
+          image: REPLACE_WITH_ECR_IMAGE
+          ports:
+            - containerPort: 3000

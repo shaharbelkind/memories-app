@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "types": ["node", "reflect-metadata"]
+  },
+  "include": ["src/main.ts", "src/app.module.ts", "src/hello.resolver.ts", "src/prisma.service.ts"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/**/resolvers/**/*",
+    "src/**/modules/**/*",
+    "src/**/auth/**/*",
+    "src/**/memory/**/*",
+    "src/**/user/**/*",
+    "src/**/child/**/*",
+    "src/**/types/**/*"
+  ]
+}

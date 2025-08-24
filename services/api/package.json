@@ -1,0 +1,39 @@
+{
+  "name": "api",
+  "private": true,
+  "scripts": {
+    "dev": "nest start --watch",
+    "build": "nest build",
+    "start": "node dist/main.js",
+    "prisma": "prisma generate && prisma migrate deploy"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.12.2",
+    "@aws-sdk/client-s3": "^3.637.0",
+    "@aws-sdk/s3-request-presigner": "^3.637.0",
+    "@nestjs/apollo": "^11.0.6",
+    "@nestjs/common": "^11.0.7",
+    "@nestjs/core": "^11.0.7",
+    "@nestjs/graphql": "^12.1.1",
+    "@nestjs/platform-express": "^11.0.7",
+    "@prisma/client": "^5.18.0",
+    "@types/bcryptjs": "^2.4.6",
+    "apollo-server-express": "^3.13.0",
+    "bcryptjs": "^3.0.2",
+    "bullmq": "^5.58.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "graphql": "^16.9.0",
+    "ioredis": "^5.7.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^10.4.5",
+    "@nestjs/schematics": "^10.1.2",
+    "@nestjs/testing": "^10.3.7",
+    "prisma": "^5.18.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
+}

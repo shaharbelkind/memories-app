@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Child {
+  id        String  @id @default(cuid())
+  name      String
+  dob       String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  memories  Memory[]
+  stories   Story[]
+  arObjects ARObject[]
+  shares    Share[]
+}
+
+model Memory {
+  id        String   @id @default(cuid())
+  childId   String
+  child     Child    @relation(fields: [childId], references: [id])
+  kind      String
+  url       String
+  takenAt   DateTime?
+  tags      String   @default("")
+  createdAt DateTime @default(now())
+}
+
+model Story {
+  id        String   @id @default(cuid())
+  childId   String
+  child     Child    @relation(fields: [childId], references: [id])
+  type      String
+  title     String
+  status    String
+  year      Int?
+  duration  Int?
+  url       String?
+  createdAt DateTime @default(now())
+}
+
+model ARObject {
+  id        String   @id @default(cuid())
+  childId   String
+  child     Child    @relation(fields: [childId], references: [id])
+  name      String
+  meshUrl   String
+  previewUrl String
+  status    String
+  createdAt DateTime @default(now())
+}
+
+model Share {
+  id        String   @id @default(cuid())
+  childId   String
+  child     Child    @relation(fields: [childId], references: [id])
+  type      String
+  email     String?
+  role      String?
+  permissions String  @default("")
+  status    String
+  createdAt DateTime @default(now())
+}
